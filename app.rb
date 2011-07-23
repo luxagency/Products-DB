@@ -9,21 +9,8 @@ require './helpers.rb'
 dbconfig = YAML.load(File.read('config/database.yml'))
 RACK_ENV ||= 'development'
 SITE_ID = 1
-if RACK_ENV == 'production'
-  require 'postgres'
-  db = URI.parse(ENV['DATABASE_URL'])
 
-  ActiveRecord::Base.establish_connection(
-    :adapter  => 'postgresql',
-    :host     => db.host,
-    :username => db.user,
-    :password => db.password,
-    :database => db.path[1..-1],
-    :encoding => 'utf8'
-  )
-else
-  ActiveRecord::Base.establish_connection dbconfig[RACK_ENV]
-end
+ActiveRecord::Base.establish_connection dbconfig[RACK_ENV]
 
 
 ## models ##

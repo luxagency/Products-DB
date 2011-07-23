@@ -11,5 +11,6 @@ gem 'sqlite3-ruby'
 gem 'sinatra-activerecord'
 
 group :production do
- gem 'pg'
+  gem 'activerecord', "<= 2.3.11"
+  # gem 'pg'
 end
