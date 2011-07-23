@@ -28,6 +28,7 @@ end
 ## actions ##
 
   get '/' do   
+    protected!
     @products = Product.all
     haml :index
   end
@@ -40,10 +41,12 @@ end
   end
 
   get '/products/new' do
+    protected!
     haml :products_new
   end
 
   post '/products' do
+    protected!
     @product = Product.create(params[:product]) 
     if @product.save
         redirect '/products'
@@ -55,15 +58,18 @@ end
   
   ## sites ##
   get '/sites' do
+    protected!
     @sites = Site.all
     haml :sites_index
   end
 
   get '/sites/new' do
+    protected!
     haml :sites_new
   end
 
   post '/sites' do
+    protected!
     @site = Site.new(params[:site]) 
     if @site.save
         redirect '/sites'
