@@ -1,5 +1,5 @@
 .bundle
-db/*.sql
+db/*.db
 config/database.yml
 *.rvmrc
 reforestanding-dev.db

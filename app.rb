@@ -21,6 +21,7 @@ class Product < ActiveRecord::Base
 end
 
 class Site < ActiveRecord::Base
+  validates_presence_of :name, :url
   validates_uniqueness_of :url
 end
 
@@ -49,7 +50,7 @@ end
     protected!
     @product = Product.create(params[:product]) 
     if @product.save
-        redirect '/products'
+      redirect '/products'
     else
       @errors = true
       haml :products_new
@@ -72,7 +73,7 @@ end
     protected!
     @site = Site.new(params[:site]) 
     if @site.save
-        redirect '/sites'
+      redirect '/sites'
     else
       @errors = true
       haml :sites_new
