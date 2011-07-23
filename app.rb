@@ -2,13 +2,28 @@ require 'sinatra'
 require 'sinatra/activerecord'
 require 'sinatra/base'
 require 'active_record'
+require 'uri'
 require 'haml'
 require './helpers.rb'
 
 dbconfig = YAML.load(File.read('config/database.yml'))
 RACK_ENV ||= 'development'
 SITE_ID = 1
-ActiveRecord::Base.establish_connection dbconfig[RACK_ENV]
+if RACK_ENV == 'production'
+  db = URI.parse(ENV['DATABASE_URL'])
+
+  ActiveRecord::Base.establish_connection(
+    :adapter  => db.scheme == 'postgres' ? 'postgresql' : db.scheme,
+    :host     => db.host,
+    :username => db.user,
+    :password => db.password,
+    :database => db.path[1..-1],
+    :encoding => 'utf8'
+  )
+else
+  ActiveRecord::Base.establish_connection dbconfig[RACK_ENV]
+end
+
 
 ## models ##
 class Product < ActiveRecord::Base
