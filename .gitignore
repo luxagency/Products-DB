@@ -1,0 +1,5 @@
+.bundle
+db/*.sql
+config/database.yml
+*.rvmrc
+reforestanding-dev.db

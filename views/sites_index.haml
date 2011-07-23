@@ -1,0 +1,17 @@
+%h1 Listing sites
+
+- unless @sites.empty?
+  %table
+    %tr
+      %th Name
+      %th url
+      %th clicks      
+    - @sites.each do |site|
+      %tr
+        %td=site.name
+        %td=site.url
+        %td=site.clicks.to_i
+- else
+  No sites found
+%br
+

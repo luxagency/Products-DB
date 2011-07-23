@@ -1,0 +1,12 @@
+%h1 New site
+%form(action="/sites" method="post")
+  - if @errors
+    #message= @site.errors.full_messages
+  %ul
+    %li
+      %label(for="site-name") Title
+      %input(type="text" name="site[name]" id="site-name")
+    %li
+      %label(for="site-url") Link
+      %input(type="text" name="site[url]" id="site-url")
+  %input(type="submit")

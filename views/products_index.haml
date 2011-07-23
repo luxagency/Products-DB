@@ -1,0 +1,22 @@
+- unless params[:widget]
+  %h1 Listing products
+
+- unless @products.empty?
+  %ul#ul-table
+    %div.nav
+      %img(src="/images/page-left.png")
+      %div.nav-text
+        1 of 
+        = @products.count
+      %img(src="/images/page-right.png")
+    - @products.each do |product|
+      %li
+        %a(href="#{product.local_url(params[:site_id])}" target="blank")
+          %img(src="#{product.image_url}")
+          %div= product.title
+  .clear
+- else
+  No products found
+
+%br
+

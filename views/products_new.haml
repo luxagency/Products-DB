@@ -1,0 +1,15 @@
+%h1 New product
+%form(action="/products" method="post")
+  - if @errors
+    #message= @product.errors.full_messages
+  %ul
+    %li
+      %label(for="product-title") Title
+      %input(type="text" name="product[title]" id="product-title")
+    %li
+      %label(for="product-link") Link
+      %input(type="text" name="product[link]" id="product-link")
+    %li
+      %label(for="product-image-url") Image url
+      %input(type="text" name="product[image_url]" id="product-image-url")
+  %input(type="submit")
