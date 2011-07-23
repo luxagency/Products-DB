@@ -40,7 +40,7 @@ end
   ## products ##
   get '/products' do
     params[:site_id] ||= SITE_ID
-    @products = Product.limit(6)
+    @products = Product.all(:limit => 6)
     haml :products_index
   end
 
