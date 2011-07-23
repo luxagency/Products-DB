@@ -10,10 +10,11 @@ dbconfig = YAML.load(File.read('config/database.yml'))
 RACK_ENV ||= 'development'
 SITE_ID = 1
 if RACK_ENV == 'production'
+  require 'postgres'
   db = URI.parse(ENV['DATABASE_URL'])
 
   ActiveRecord::Base.establish_connection(
-    :adapter  => db.scheme == 'postgres' ? 'postgresql' : db.scheme,
+    :adapter  => 'postgresql',
     :host     => db.host,
     :username => db.user,
     :password => db.password,
