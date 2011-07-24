@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/spec_helper'
+require File.dirname(__FILE__) + "/product_db/spec_helper"
 
 describe "App" do
   include Rack::Test::Methods
@@ -15,30 +15,30 @@ describe "App" do
       end
 
       it "should not render with bad credentials #{url}" do
-        authorize 'bad', 'boy'
+        authorize "bad", "boy"
         get url
         last_response.status.should == 401
       end
 
       it "should render well with good creds #{url}" do
-        authorize 'admin', 'rob'
+        authorize "admin", "rob"
         get url
         last_response.should be_ok
       end
     end
 
     it "should respond to /products and not require http_authentication" do
-      get '/products'
+      get "/product_db/products"
       last_response.should be_ok
     end
 
     it "should return the correct content-type when viewing root" do
-      get '/'
+      get "/product_db/"
       last_response.headers["Content-Type"].should == "text/html;charset=utf-8"
     end
 
     it "should return 404 when page cannot be found" do
-      get '/404'
+      get "/product_db/404"
       last_response.status.should == 404
     end
   end
@@ -46,7 +46,7 @@ describe "App" do
   context "posts" do
 
     before(:each) do
-      authorize 'admin', 'rob'
+      authorize "admin", "rob"
       Product.delete_all
       Site.delete_all
     end
@@ -54,20 +54,20 @@ describe "App" do
     context "invalid" do
       it "should return errors when new product is invalid" do
         expect {
-          post "/products", :product => {:title => 'lala'}
+          post "/products", :product => {:title => "lala"}
         }.to_not change{Product.count}
       end
 
       it "should return errors when new site is invalid" do
         expect {
-          post "/sites", :site => {:name => 'lala'}
+          post "/sites", :site => {:name => "lala"}
         }.to_not change{Site.count}
       end
     end
     context "valid" do
       it "should create valid product" do
         expect {
-          post "/products", :product => {:title => 'lala', :link => "http://link.com", :image_url => 'http://something.jpg'}
+          post "/products", :product => {:title => "lala", :link => "http://link.com", :image_url => "http://something.jpg"}
         }.to change{Product.count}
 
         last_response.status.should == 302
@@ -76,7 +76,7 @@ describe "App" do
 
       it "should create valid site" do
         expect {
-          post "/sites", :site => {:name => 'lala', :url => "http://link.com"}
+          post "/sites", :site => {:name => "lala", :url => "http://link.com"}
         }.to change{Site.count}
 
         last_response.status.should == 302
@@ -85,8 +85,8 @@ describe "App" do
     end
 
     it "should increace clicks count for given product and redirect to product link" do
-      site = Site.create(:name => 'sample', :url => "http://style.com")
-      product = Product.create(:title => 'Hello', :link => 'http://dummy.com', :image_url => 'something')
+      site = Site.create(:name => "sample", :url => "http://style.com")
+      product = Product.create(:title => "Hello", :link => "http://dummy.com", :image_url => "something")
 
       expect {
         get "/goto/#{product.id}/site_id/#{site.id}"

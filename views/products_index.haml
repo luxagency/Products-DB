@@ -2,18 +2,23 @@
   %h1 Listing products
 
 - unless @products.empty?
-  %ul#ul-table
-    %div.nav
-      %img(src="/images/page-left.png")
-      %div.nav-text
-        1 of 
-        = @products.count
-      %img(src="/images/page-right.png")
-    - @products.each do |product|
-      %li
-        %a(href="#{product.local_url(params[:site_id])}" target="blank")
-          %img(src="#{product.image_url}")
-          %div= product.title
+  %div.nav
+    %span.nav-text
+      %span#page_number 1 
+      of 
+      = (Product.count / PP).round + 1
+  %a(class="prev browse left")
+  .scrollable
+    .items
+      - @products.in_groups_of(PP) do |group|
+        %div
+          - group.compact.each do |product|
+            .item
+              %a(href="#{product.local_url(params[:site_id])}" target="blank" id="#{product.id}")
+                %img(src="#{product.image_url}")
+                %br
+                %span= product.title
+  %a(class="next browse right")
   .clear
 - else
   No products found

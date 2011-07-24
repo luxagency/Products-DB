@@ -1,0 +1,20 @@
+%h1 Listing products
+
+- unless @products.empty?
+  %table
+    %tr
+      %th Title
+      %th Link
+      %th image_url      
+      %th Actions
+    - @products.each do |product|
+      %tr
+        %td=product.title
+        %td=product.link
+        %td=product.image_url
+        %td
+          %a(href="/products/#{product.id}/edit") Edit
+- else
+  No products found
+%br
+

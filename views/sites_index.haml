@@ -6,11 +6,13 @@
       %th Name
       %th url
       %th clicks      
+      %th actions 
     - @sites.each do |site|
       %tr
         %td=site.name
         %td=site.url
         %td=site.clicks.to_i
+        %td= link_to "Edit", "/sites/#{site.id}/edit"
 - else
   No sites found
 %br

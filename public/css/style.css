@@ -12,7 +12,7 @@ body{
 	text-align:left;
 	color:#FF6600;
 	font-size:13px;	
-	font-family: 'Anton', arial, sans-serif;
+	font-family: "Anton", arial, sans-serif;
 }
 
 .intro{
@@ -35,4 +35,8 @@ form ul li {
 
 form ul li label {
   margin-right: 30px;
+}
+
+form input {
+  width: 300px;
 }
