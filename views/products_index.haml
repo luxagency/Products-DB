@@ -3,11 +3,12 @@
 
 - unless @products.empty?
   %div.nav
+    %a(class="prev browse left")
     %span.nav-text
       %span#page_number 1 
       of 
       = (Product.count / PP).round + 1
-  %a(class="prev browse left")
+    %a(class="next browse right")
   .scrollable
     .items
       - @products.in_groups_of(PP) do |group|
@@ -18,7 +19,7 @@
                 %img(src="#{product.image_url}")
                 %br
                 %span= product.title
-  %a(class="next browse right")
+  
   .clear
 - else
   No products found
