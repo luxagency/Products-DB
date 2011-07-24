@@ -7,7 +7,7 @@ require "haml"
 require "./helpers.rb"
 
 dbconfig = YAML.load(File.read("config/database.yml"))
-RACK_ENV ||= "development"
+RACK_ENV = "development"
 SITE_ID = 1
 PP = 6
 ActiveRecord::Base.establish_connection dbconfig[RACK_ENV]
@@ -19,7 +19,7 @@ class Product < ActiveRecord::Base
   # validates_uniqueness_of :link
   
   def local_url(site_id)
-    "#{P}/goto/#{id}/site_id/#{site_id}"
+    "/goto/#{id}/site_id/#{site_id}"
   end
 end
 
@@ -50,6 +50,7 @@ end
 
   get "/products/new" do
     protected!
+    @product = Product.new
     haml :products_new
   end
   
@@ -98,6 +99,7 @@ end
 
   get "/sites/new" do
     protected!
+    @site = Site.new
     haml :sites_new
   end
 
