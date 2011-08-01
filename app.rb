@@ -24,6 +24,12 @@ class Product < ActiveRecord::Base
   end
 end
 
+class Click < ActiveRecord::Base
+  belongs_to :site
+  belongs_to :category    
+end
+
+
 class Site < ActiveRecord::Base
   validates_presence_of :name, :url
   validates_uniqueness_of :url
@@ -49,10 +55,6 @@ class Category < ActiveRecord::Base
 
 end
 
-class Click < ActiveRecord::Base
-  belongs_to :site
-  belongs_to :category    
-end
 
 
 ## actions ##
