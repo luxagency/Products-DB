@@ -35,7 +35,7 @@ class Site < ActiveRecord::Base
   validates_uniqueness_of :url
   
   def clicks_per_category
-    Click.where(:site_id => self.id).collect{|c|
+    Click.all(:conditions => {:site_id => self.id}).collect{|c|
       "#{c.category}: #{c.clicks}"
     }.join("<br />")
   end
