@@ -1,6 +1,6 @@
 class Initial < ActiveRecord::Migration
   def self.up
-		create_table :products do |t|
+    create_table :products do |t|
       t.string :image_url
       t.string :link
       t.string :title
@@ -14,7 +14,7 @@ class Initial < ActiveRecord::Migration
   end
 
   def self.down
- 		drop_table :products
+    drop_table :products
     drop_table :sites
   end
 end

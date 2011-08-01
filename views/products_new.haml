@@ -1,5 +1,6 @@
 %h1 New product
 - action = "/products" + (@product.new_record? ? "" : "/#{@product.id}")
+- category = @product.new_record? ? '' : @product.category.id
 %form(action="#{action}" method="post")
   - if @errors
     #message= @product.errors.full_messages
@@ -13,4 +14,8 @@
     %li
       %label(for="product-image-url") Image url
       %input(type="text" name="product[image_url]" id="product-image-url" value="#{@product.image_url}")
+    %li
+      %label(for="product-category_id") Link
+      %select(id="product-category_id" name="product[category_id]")
+        = options_for_select(Category.to_options, category)
   %input(type="submit")

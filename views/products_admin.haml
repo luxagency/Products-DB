@@ -5,13 +5,15 @@
     %tr
       %th Title
       %th Link
-      %th image_url      
+      %th Image_url
+      %th Category
       %th Actions
     - @products.each do |product|
       %tr
         %td=product.title
         %td=product.link
         %td=product.image_url
+        %td=product.category
         %td
           %a(href="/products/#{product.id}/edit") Edit
 - else
