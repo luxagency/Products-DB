@@ -22,12 +22,17 @@ class Product < ActiveRecord::Base
   def local_url(site_id)
     "/goto/#{id}/site_id/#{site_id}"
   end
-
 end
 
 class Site < ActiveRecord::Base
   validates_presence_of :name, :url
   validates_uniqueness_of :url
+  
+  def clicks_per_category
+    Click.where(:site_id => self.id).collect{|c|
+      "#{c.category}: #{c.clicks}"
+    }.join("<br />")
+  end
 end
 
 class Category < ActiveRecord::Base
@@ -43,6 +48,12 @@ class Category < ActiveRecord::Base
   end
 
 end
+
+class Click < ActiveRecord::Base
+  belongs_to :site
+  belongs_to :category    
+end
+
 
 ## actions ##
 
@@ -194,10 +205,17 @@ end
 
   ## redirect ##
   get "/goto/:id/site_id/:site_id" do
+    @product = Product.find(params[:id])
+    
+    # Update site clicks
     @site = Site.find(params[:site_id])
     @site.clicks = (@site.clicks || 0) + 1
     @site.save
+    
+    # Update per category clicks
+    @clicks = Click.find_or_initialize_by_site_id_and_category_id(params[:site_id], @product.category_id)
+    @clicks.clicks = (@clicks.clicks || 0) + 1
+    @clicks.save
 
-    @product = Product.find(params[:id])
     redirect @product.link
   end
