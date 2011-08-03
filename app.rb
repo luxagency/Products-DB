@@ -18,26 +18,53 @@ class Product < ActiveRecord::Base
   validates_presence_of :image_url, :title, :link
   # validates_uniqueness_of :link
   belongs_to :category
+  has_and_belongs_to_many :tags
 
   def local_url(site_id)
     "/goto/#{id}/site_id/#{site_id}"
+  end
+
+  def tags_clicks_plus_one(site_id = 0)
+    self.tags.each{|tag|
+      Click.clicks_plus_one_for_tag(site_id, tag.id)
+    }
+  end
+
+  def tag_id=(id)
+    self.tag_ids = self.tag_ids << id.to_i unless id.to_i == 0
   end
 end
 
 class Click < ActiveRecord::Base
   belongs_to :site
-  belongs_to :category    
+  belongs_to :category
+
+  def clicks_plus_one_for_category(site_id, category_id)
+    clicks = Click.find_or_initialize_by_site_id_and_category_id(site_id, category_id)
+    clicks.update_attribute(:clicks, (clicks.clicks || 0) + 1)
+  end
+
+  def clicks_plus_one_for_tag(site_id, tag_id)
+    clicks = Click.find_or_initialize_by_site_id_and_tag_id(site_id, tag_id)
+    clicks.update_attribute(:clicks, (clicks.clicks || 0) + 1)
+  end
 end
 
 
 class Site < ActiveRecord::Base
   validates_presence_of :name, :url
   validates_uniqueness_of :url
-  
+
   def clicks_per_category
     Click.all(:conditions => {:site_id => self.id}).collect{|c|
       "#{c.category}: #{c.clicks}"
     }.join("<br />")
+  end
+
+  def self.clicks_plus_one(site_id)
+    site = Site.find()
+    site.clicks = (@site.clicks || 0) + 1
+    site.save
   end
 end
 
@@ -51,6 +78,20 @@ class Category < ActiveRecord::Base
 
   def self.to_options
     all.collect{|cat| [cat.name, cat.id]}
+  end
+
+end
+
+class Tag < ActiveRecord::Base
+  validates_presence_of :name
+  has_and_belongs_to_many :products
+
+  def to_s
+    name
+  end
+
+  def self.to_options
+    all.collect{|tag| [tag.name, tag.id]}
   end
 
 end
@@ -111,7 +152,8 @@ end
 
   post "/products" do
     protected!
-    @product = Product.create(params[:product])
+    @product = Product.new(params[:product])
+    @product.tag_id = params[:product][:tag_id]
     if @product.save
       redirect "/products"
     else
@@ -210,16 +252,14 @@ end
   ## redirect ##
   get "/goto/:id/site_id/:site_id" do
     @product = Product.find(params[:id])
-    
+
     # Update site clicks
-    @site = Site.find(params[:site_id])
-    @site.clicks = (@site.clicks || 0) + 1
-    @site.save
-    
+    Site.clicks_plus_one(params[:site_id])
+
     # Update per category clicks
-    @clicks = Click.find_or_initialize_by_site_id_and_category_id(params[:site_id], @product.category_id)
-    @clicks.clicks = (@clicks.clicks || 0) + 1
-    @clicks.save
+    Click.plus_one_for_category(params[:site_id], @product.category_id)
+    # Update per tags clicks
+    @product.tags_clicks_plus_one(params[:site_id])
 
     redirect @product.link
   end

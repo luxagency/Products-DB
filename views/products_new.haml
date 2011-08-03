@@ -18,4 +18,11 @@
       %label(for="product-category_id") Link
       %select(id="product-category_id" name="product[category_id]")
         = options_for_select(Category.to_options, category)
+    %li
+      %label(for="product-tag_id") Add tag
+      %select(id="product-tag_id" name="product[tag_id]")
+        = options_for_select([''] + Tag.to_options, '')
+      %br
+      %label Tags
+      %p= @product.tags.collect(&:name).join(", ")
   %input(type="submit")
