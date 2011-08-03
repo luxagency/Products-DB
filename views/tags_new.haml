@@ -1,0 +1,10 @@
+%h1 New tag
+- action = "/tags" + (@tag.new_record? ? "" : "/#{@tag.id}")
+%form(action="#{action}" method="post")
+  - if @errors
+    #message= @tag.errors.full_messages
+  %ul
+    %li
+      %label(for="tag-name") Title
+      %input(type="text" name="tag[name]" id="tag-name" value="#{@tag.name}")
+  %input(type="submit")

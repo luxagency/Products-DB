@@ -26,7 +26,7 @@ class Product < ActiveRecord::Base
 
   def tags_clicks_plus_one(site_id = 0)
     self.tags.each{|tag|
-      Click.clicks_plus_one_for_tag(site_id, tag.id)
+      Click.plus_one_for_tag(site_id, tag.id)
     }
   end
 
@@ -38,13 +38,14 @@ end
 class Click < ActiveRecord::Base
   belongs_to :site
   belongs_to :category
+  belongs_to :tag
 
-  def clicks_plus_one_for_category(site_id, category_id)
+  def self.plus_one_for_category(site_id, category_id)
     clicks = Click.find_or_initialize_by_site_id_and_category_id(site_id, category_id)
     clicks.update_attribute(:clicks, (clicks.clicks || 0) + 1)
   end
 
-  def clicks_plus_one_for_tag(site_id, tag_id)
+  def self.plus_one_for_tag(site_id, tag_id)
     clicks = Click.find_or_initialize_by_site_id_and_tag_id(site_id, tag_id)
     clicks.update_attribute(:clicks, (clicks.clicks || 0) + 1)
   end
@@ -56,14 +57,20 @@ class Site < ActiveRecord::Base
   validates_uniqueness_of :url
 
   def clicks_per_category
-    Click.all(:conditions => {:site_id => self.id}).collect{|c|
+    Click.all(:conditions => ['site_id = ? AND category_id IS NOT NULL', self.id]).collect{|c|
       "#{c.category}: #{c.clicks}"
     }.join("<br />")
   end
 
+  def clicks_per_tag
+    Click.all(:conditions => ['site_id = ? AND tag_id IS NOT NULL', self.id]).collect{|c|
+      "#{c.tag}: #{c.clicks}"
+    }.join("<br />")
+  end
+
   def self.clicks_plus_one(site_id)
-    site = Site.find()
-    site.clicks = (@site.clicks || 0) + 1
+    site = Site.find(site_id)
+    site.clicks = (site.clicks || 0) + 1
     site.save
   end
 end
@@ -246,6 +253,50 @@ end
     else
       @errors = true
       haml :categories_new
+    end
+  end
+  
+  ## tags ##
+
+  get "/tags" do
+    protected!
+    @tags = Tag.all
+    haml :tags_index
+  end
+
+  get "/tags/new" do
+    protected!
+    @tag = Tag.new
+    haml :tags_new
+  end
+
+  post "/tags" do
+    protected!
+    @tag = Tag.new(params[:tag])
+    if @tag.save
+      redirect "/tags"
+    else
+      @errors = true
+      haml :tags_new
+    end
+  end
+
+  get "/tags/:id/edit" do
+    protected!
+    @tag = Tag.find(params[:id])
+
+    haml :tags_new
+  end
+
+  post "/tags/:id" do
+    protected!
+    @tag = Tag.find(params[:id])
+    @tag.name = params[:tag][:name]
+    if @tag.save
+      redirect '/tags'
+    else
+      @errors = true
+      haml :tags_new
     end
   end
 
