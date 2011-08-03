@@ -67,12 +67,14 @@ end
   ## products ##
   get "/products" do
     params[:site_id] ||= SITE_ID
-    @products = Product.all(:limit => PP*3)
+    category = params[:category_id] ? {:category_id => params[:category_id]} : {}
+    @products = Product.all(:limit => PP*3, :conditions => category)
     haml :products_index
   end
 
   get '/products/next/:index' do
-    @products = Product.all(:limit => PP, :offset => params[:index].to_i * PP)
+    category = params[:category_id] ? {:category_id => params[:category_id]} : {}
+    @products = Product.all(:limit => PP, :offset => params[:index].to_i * PP, :conditions => category)
     haml :products_next, :layout => false
   end
 

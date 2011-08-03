@@ -2,12 +2,13 @@
   %h1 Listing products
 
 - unless @products.empty?
+  %input(type="hidden" id="category_id" value="#{params[:category_id]}")
   %div.nav
     %a(class="prev browse left")
     %span.nav-text
       %span#page_number 1 
       of 
-      = (Product.count / PP).round + 1
+      = (@products.count / PP).round + 1
     %a(class="next browse right")
   .scrollable
     .items
