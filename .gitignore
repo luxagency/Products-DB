@@ -2,3 +2,4 @@
 db/*.db
 config/database.yml
 reforestanding-dev.db
+coverage

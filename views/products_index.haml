@@ -8,11 +8,11 @@
     %span.nav-text
       %span#page_number 1 
       of 
-      = (@products.count / PP).round + 1
+      = (@products.count / PER_PAGE).round + 1
     %a(class="next browse right")
   .scrollable
     .items
-      - @products.in_groups_of(PP) do |group|
+      - @products.in_groups_of(PER_PAGE) do |group|
         %div
           - group.compact.each do |product|
             .item

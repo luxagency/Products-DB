@@ -1,112 +1,25 @@
 require "sinatra"
+require "sinatra/reloader"
 require "sinatra/activerecord"
 require "sinatra/base"
 require "active_record"
 require "uri"
 require "haml"
+require "bundler/setup"
+
+
+# App
 require "./helpers.rb"
+require "./models.rb"
 
 dbconfig = YAML.load(File.read("config/database.yml"))
-RACK_ENV = "development"
+RACK_ENV ||= ENV["RACK_ENV"] || "development"
 SITE_ID = 1
-PP = 6
+PER_PAGE = 6 # per page
 ActiveRecord::Base.establish_connection dbconfig[RACK_ENV]
 
 
-## models ##
-class Product < ActiveRecord::Base
-  validates_presence_of :image_url, :title, :link
-  # validates_uniqueness_of :link
-  belongs_to :category
-  has_and_belongs_to_many :tags
-
-  def local_url(site_id)
-    "/goto/#{id}/site_id/#{site_id}"
-  end
-
-  def tags_clicks_plus_one(site_id = 0)
-    self.tags.each{|tag|
-      Click.plus_one_for_tag(site_id, tag.id)
-    }
-  end
-
-  def tag_id=(id)
-    self.tag_ids = self.tag_ids << id.to_i unless id.to_i == 0
-  end
-end
-
-class Click < ActiveRecord::Base
-  belongs_to :site
-  belongs_to :category
-  belongs_to :tag
-
-  def self.plus_one_for_category(site_id, category_id)
-    clicks = Click.find_or_initialize_by_site_id_and_category_id(site_id, category_id)
-    clicks.update_attribute(:clicks, (clicks.clicks || 0) + 1)
-  end
-
-  def self.plus_one_for_tag(site_id, tag_id)
-    clicks = Click.find_or_initialize_by_site_id_and_tag_id(site_id, tag_id)
-    clicks.update_attribute(:clicks, (clicks.clicks || 0) + 1)
-  end
-end
-
-
-class Site < ActiveRecord::Base
-  validates_presence_of :name, :url
-  validates_uniqueness_of :url
-
-  def clicks_per_category
-    Click.all(:conditions => ['site_id = ? AND category_id IS NOT NULL', self.id]).collect{|c|
-      "#{c.category}: #{c.clicks}"
-    }.join("<br />")
-  end
-
-  def clicks_per_tag
-    Click.all(:conditions => ['site_id = ? AND tag_id IS NOT NULL', self.id]).collect{|c|
-      "#{c.tag}: #{c.clicks}"
-    }.join("<br />")
-  end
-
-  def self.clicks_plus_one(site_id)
-    site = Site.find(site_id)
-    site.clicks = (site.clicks || 0) + 1
-    site.save
-  end
-end
-
-class Category < ActiveRecord::Base
-  validates_presence_of :name
-  validates_uniqueness_of :name
-
-  def to_s
-    name
-  end
-
-  def self.to_options
-    all.collect{|cat| [cat.name, cat.id]}
-  end
-
-end
-
-class Tag < ActiveRecord::Base
-  validates_presence_of :name
-  has_and_belongs_to_many :products
-
-  def to_s
-    name
-  end
-
-  def self.to_options
-    all.collect{|tag| [tag.name, tag.id]}
-  end
-
-end
-
-
-
 ## actions ##
-
   get "/" do
     protected!
     haml :index
@@ -116,13 +29,13 @@ end
   get "/products" do
     params[:site_id] ||= SITE_ID
     category = params[:category_id] ? {:category_id => params[:category_id]} : {}
-    @products = Product.all(:limit => PP*3, :conditions => category)
+    @products = Product.all(:limit => PER_PAGE*3, :conditions => category)
     haml :products_index
   end
 
   get '/products/next/:index' do
     category = params[:category_id] ? {:category_id => params[:category_id]} : {}
-    @products = Product.all(:limit => PP, :offset => params[:index].to_i * PP, :conditions => category)
+    @products = Product.all(:limit => PER_PAGE, :offset => params[:index].to_i * PER_PAGE, :conditions => category)
     haml :products_next, :layout => false
   end
 
@@ -195,7 +108,7 @@ end
 
   get "/sites/:id/edit" do
     protected!
-    @product = Product.find(params[:id])
+    @product = Site.find(params[:id])
 
     haml :products_new
   end
