@@ -14,6 +14,19 @@ describe "Site Actions" do
     @app ||= Sinatra::Application
   end
 
+  context "acceptance" do
+    before(:each) do
+      authorize "admin", "rob"
+    end
+
+    it "should have form fields for each attribute" do
+      get '/sites/new'
+      (Site.new.attributes.keys - ["clicks"]).each{|attr, _|
+        last_response.body.should =~ /site\[#{attr}\]/m
+      }
+    end
+  end
+
   context "get" do
     before(:all) do
       Site.delete_all
@@ -73,7 +86,8 @@ describe "Site Actions" do
       it "should update valid site" do
         s = Site.create(:url => 'http://google.com/google.png', :name => "something")
         post "/sites/#{s.id}", :site => {:name => 'something new'}
-        last_response.should_not be_ok
+        last_response.status.should == 302
+        last_response.headers["location"].should == "http://example.org/sites"
 
         s2 = Site.find(s.id)
         s2.name.should == 'something new'

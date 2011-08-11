@@ -14,6 +14,19 @@ describe "Tag Actions" do
     @app ||= Sinatra::Application
   end
 
+  context "acceptance" do
+    before(:each) do
+      authorize "admin", "rob"
+    end
+
+    it "should have form fields for each attribute" do
+      get '/tags/new'
+      Tag.new.attributes.keys.each{|attr, _|
+        last_response.body.should =~ /tag\[#{attr}\]/m
+      }
+    end
+  end
+
   context "get" do
     before(:all) do
       Tag.delete_all
@@ -73,7 +86,8 @@ describe "Tag Actions" do
       it "should update valid tag" do
         tag = Tag.create(:name => "something")
         post "/tags/#{tag.id}", :tag => {:name => 'something new'}
-        last_response.should_not be_ok
+        last_response.status.should == 302
+        last_response.headers["location"].should == "http://example.org/tags"
 
         t2 = Tag.find(tag.id)
         t2.name.should == 'something new'

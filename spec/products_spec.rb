@@ -21,6 +21,19 @@ describe "Product Actions" do
     @app ||= Sinatra::Application
   end
 
+  context "acceptance" do
+    before(:each) do
+      authorize "admin", "rob"
+    end
+
+    it "should have form fields for each attribute" do
+      get '/products/new'
+      Product.new.attributes.keys.each{|attr, _|
+        last_response.body.should =~ /product\[#{attr}\]/m
+      }
+    end
+  end
+
   context "get" do
     before(:all) do
       Product.delete_all
@@ -89,7 +102,8 @@ describe "Product Actions" do
       it "should update valid product" do
         p = Product.create(:image_url => 'http://google.com/google.png', :title => "something", :link => 'link')
         post "/products/#{p.id}", :product => {:title => 'something new'}
-        last_response.should_not be_ok
+        last_response.status.should == 302
+        last_response.headers["location"].should == "http://example.org/products/admin"
 
         p2 = Product.find(p.id)
         p2.title.should == 'something new'

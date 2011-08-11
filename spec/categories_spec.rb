@@ -22,6 +22,19 @@ describe "Category Actions" do
     @app ||= Sinatra::Application
   end
 
+  context "acceptance" do
+    before(:each) do
+      authorize "admin", "rob"
+    end
+
+    it "should have form fields for each attribute" do
+      get '/categories/new'
+      Category.new.attributes.keys.each{|attr, _|
+        last_response.body.should =~ /category\[#{attr}\]/m
+      }
+    end
+  end
+
   context "get" do
     before(:all) do
       Category.delete_all
@@ -81,7 +94,8 @@ describe "Category Actions" do
       it "should update valid category" do
         c = Category.create(:name => "something")
         post "/categories/#{c.id}", :category => {:name => 'something new'}
-        last_response.should_not be_ok
+        last_response.status.should == 302
+        last_response.headers["location"].should == "http://example.org/categories"
 
         c2 = Category.find(c.id)
         c2.name.should == 'something new'
