@@ -1,0 +1,16 @@
+%h1 Listing referrals
+
+- unless @referrals.empty?
+  %table
+    %tr
+      %th Name
+      %th Referral String
+      %th actions 
+    - @referrals.each do |referral|
+      %tr
+        %td=referral.site
+        %td=referral.referral_string
+        %td= link_to "Edit", "/referrals/#{referral.id}/edit"
+- else
+  No referrals found
+%br

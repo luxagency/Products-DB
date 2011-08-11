@@ -1,0 +1,15 @@
+%h1 New referral
+- action = "/referrals" + (@referral.new_record? ? "" : "/#{@referral.id}")
+%form(action="#{action}" method="post")
+  - if @errors
+    #message= @referral.errors.full_messages
+  %ul
+    %li
+      %label(for="referral-site") Site
+      %input(type="text" name="referral[site]" id="referral-site" value="#{@referral.site}")
+      (example: amazon.com)
+    %li
+      %label(for="referral-referral-string") Referral string
+      %input(type="text" name="referral[referral_string]" id="referral-referral-string" value="#{@referral.referral_string}")
+      (example: ref=13599&merchant_id=71)
+  %input(type="submit")

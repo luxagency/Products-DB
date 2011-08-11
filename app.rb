@@ -160,8 +160,7 @@ ActiveRecord::Base.establish_connection dbconfig[RACK_ENV]
   post "/categories/:id" do
     protected!
     @category = Category.find(params[:id])
-    @category.name = params[:category][:name]
-    if @category.save
+    if @category.update_attributes(params[:category])
       redirect '/categories'
     else
       @errors = true
@@ -204,14 +203,58 @@ ActiveRecord::Base.establish_connection dbconfig[RACK_ENV]
   post "/tags/:id" do
     protected!
     @tag = Tag.find(params[:id])
-    @tag.name = params[:tag][:name]
-    if @tag.save
+    if @tag.update_attributes(params[:tag])
       redirect '/tags'
     else
       @errors = true
       haml :tags_new
     end
   end
+
+
+  ## referrals ##
+
+  get "/referrals" do
+    protected!
+    @referrals = Referral.all
+    haml :referrals_index
+  end
+
+  get "/referrals/new" do
+    protected!
+    @referral = Referral.new
+    haml :referrals_new
+  end
+
+  post "/referrals" do
+    protected!
+    @referral = Referral.new(params[:referral])
+    if @referral.save
+      redirect "/referrals"
+    else
+      @errors = true
+      haml :referrals_new
+    end
+  end
+
+  get "/referrals/:id/edit" do
+    protected!
+    @referral = Referral.find(params[:id])
+
+    haml :referrals_new
+  end
+
+  post "/referrals/:id" do
+    protected!
+    @referral = Referral.find(params[:id])
+    if @referral.update_attributes(params[:referral])
+      redirect '/referrals'
+    else
+      @errors = true
+      haml :referrals_new
+    end
+  end
+  
 
   ## redirect ##
   get "/goto/:id/site_id/:site_id" do
@@ -225,5 +268,5 @@ ActiveRecord::Base.establish_connection dbconfig[RACK_ENV]
     # Update per tags clicks
     @product.tags_clicks_plus_one(params[:site_id])
 
-    redirect @product.link
+    redirect @product.link_with_referrals
   end

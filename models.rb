@@ -18,6 +18,18 @@ class Product < ActiveRecord::Base
   def tag_id=(id)
     self.tag_ids = self.tag_ids << id.to_i unless id.to_i == 0
   end
+
+  def link_with_referrals
+    parsed_link = link
+    Referral.all.each{|referral|
+      if parsed_link.match referral.site
+        join_symbol = parsed_link["?"] ? "&" : "?"
+        parsed_link += join_symbol + referral.referral_string
+        break
+      end
+    }
+    parsed_link
+  end
 end
 
 class Click < ActiveRecord::Base
@@ -84,6 +96,15 @@ class Tag < ActiveRecord::Base
 
   def self.to_options
     all.collect{|tag| [tag.name, tag.id]}
+  end
+
+end
+
+class Referral < ActiveRecord::Base
+  validates_presence_of :site, :referral_string
+
+  def to_s
+    site
   end
 
 end
