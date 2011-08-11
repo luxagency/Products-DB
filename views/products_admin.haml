@@ -6,6 +6,7 @@
       %th Title
       %th Link
       %th Image_url
+      %th Brand
       %th Category
       %th Tags
       %th Actions
@@ -14,6 +15,7 @@
         %td=product.title
         %td=product.link
         %td=product.image_url
+        %td=link_to product.brand_name, product.brand_url
         %td=product.category
         %td=product.tags.collect(&:name).join(', ')
         %td
