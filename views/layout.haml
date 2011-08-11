@@ -21,8 +21,9 @@
         %br
           = yield
     - else
-      .bordered
-        = yield
-    %div.footer
-      Product DB
-    / = haml :scrooge
+      / .bordered
+      = yield
+    - unless params[:widget]
+      %div.footer
+        Product DB
+      / = haml :scrooge

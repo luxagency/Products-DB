@@ -41,6 +41,7 @@
   float:left;
   text-align: center; 
   padding: 0px 4px 0px 0px;
+  font-size: 11px;
 /*  margin: 0px 10px 5px 10px;*/
 
 /*  float:left;*/
@@ -53,6 +54,11 @@
 	
 /*  -moz-border-radius:4px;*/
 /*  -webkit-border-radius:4px;*/
+}
+
+.scrollable .item img {
+  width: 105px;
+  height: 150px;
 }
 
 /* active item */
