@@ -9,21 +9,21 @@ describe Tag do
   end
 end
 
-describe "Tag Actions" do 
+describe "Tag Actions" do
   def app
     @app ||= Sinatra::Application
   end
-  
+
   context "get" do
     before(:all) do
       Tag.delete_all
       Tag.create(:name => "google")
     end
-    
+
     before(:each) do
       authorize "admin", "rob"
     end
-    
+
     ["/tags", "/tags/new"].each do |url|
       it "should render page #{url}" do
         authorize "admin", "rob"
@@ -31,22 +31,35 @@ describe "Tag Actions" do
         last_response.should be_ok
       end
     end
+
+    it "should render page /tags/1/edit" do
+      Tag.delete_all
+      t = Tag.create(:name => "something")
+      get "/tags/#{t.id}/edit"
+      last_response.should be_ok
+    end
   end
-  
-  context "post" do 
+
+  context "post" do
     before(:each) do
       authorize "admin", "rob"
       Tag.delete_all
     end
-    
+
     context "invalid" do
       it "should return errors when new tag is invalid" do
         expect {
           post "/tags", :tag => {}
         }.to_not change{Tag.count}
       end
+
+      it "should return errors while trying to edit unknown tag" do
+        expect {
+          post "/categories/999", :tag => {:name => "lala"}
+        }.should raise_error(ActiveRecord::RecordNotFound)
+      end
     end
-    
+
     context "valid" do
       it "should create valid tag" do
         expect {
@@ -56,7 +69,16 @@ describe "Tag Actions" do
         last_response.status.should == 302
         last_response.headers["location"].should == "http://example.org/tags"
       end
+
+      it "should update valid tag" do
+        tag = Tag.create(:name => "something")
+        post "/tags/#{tag.id}", :tag => {:name => 'something new'}
+        last_response.should_not be_ok
+
+        t2 = Tag.find(tag.id)
+        t2.name.should == 'something new'
+      end
     end
-    
+
   end
 end
