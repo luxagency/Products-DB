@@ -108,9 +108,9 @@ ActiveRecord::Base.establish_connection dbconfig[RACK_ENV]
 
   get "/sites/:id/edit" do
     protected!
-    @product = Site.find(params[:id])
+    @site = Site.find(params[:id])
 
-    haml :products_new
+    haml :sites_new
   end
 
   post "/sites/:id" do

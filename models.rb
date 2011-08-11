@@ -1,5 +1,6 @@
 class Product < ActiveRecord::Base
   validates_presence_of :image_url, :title, :link
+  validates_length_of :image_url, :title, :link, :minimum => 1, :allow_blank => false
   # validates_uniqueness_of :link
   belongs_to :category
   has_and_belongs_to_many :tags
