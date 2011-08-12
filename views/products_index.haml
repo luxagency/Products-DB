@@ -18,8 +18,19 @@
             .item
               %a(href="#{product.local_url(params[:site_id])}" target="blank" id="#{product.id}")
                 %img(src="#{product.image_url}")
-                %br
-                %span= product.title
+              %br
+              %span
+                %a(href="#{product.local_url(params[:site_id])}" target="blank" id="#{product.id}")
+                  - if product.brand_name && !product.brand_name.empty? && product.brand_url && !product.brand_url.empty?
+                    = succeed '.' do
+                      = product.title
+                  - else
+                    = product.title
+                - if product.brand_name && !product.brand_name.empty? && product.brand_url && !product.brand_url.empty?
+                  %br
+                  by
+                  %a(href="#{product.brand_url}" target="blank" id="#{product.id}")
+                    = product.brand_name
   
   .clear
 - else
