@@ -9,7 +9,7 @@
 	position:relative;
 	overflow:hidden;
 	width: 860px;
-	height:200px;
+	height:250px;
 
 	/* custom decorations */
 	border:1px solid #ccc;
@@ -58,7 +58,7 @@
 
 .scrollable .item img {
   width: 95px;
-  height: 155px;
+  height: 187px;
 }
 
 /* active item */
