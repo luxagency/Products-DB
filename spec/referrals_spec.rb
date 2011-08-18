@@ -68,7 +68,7 @@ describe "Referral Actions" do
 
       it "should return errors while trying to edit unknown referral" do
         expect {
-          post "/categories/999", :referral => {:site => "lala"}
+          post "/referrals/999", :referral => {:site => "lala"}
         }.should raise_error(ActiveRecord::RecordNotFound)
       end
     end

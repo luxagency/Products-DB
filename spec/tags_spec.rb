@@ -68,7 +68,7 @@ describe "Tag Actions" do
 
       it "should return errors while trying to edit unknown tag" do
         expect {
-          post "/categories/999", :tag => {:name => "lala"}
+          post "/tags/999", :tag => {:name => "lala"}
         }.should raise_error(ActiveRecord::RecordNotFound)
       end
     end
