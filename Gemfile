@@ -4,6 +4,7 @@ gem 'rake'
 gem 'sinatra'
 gem 'haml'
 gem 'activerecord', "<= 2.3.11"
+gem 'i18n'
 gem 'sqlite3-ruby'
 gem 'sinatra-activerecord'
 gem "sinatra-reloader"
