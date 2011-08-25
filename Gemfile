@@ -3,15 +3,13 @@ source 'http://rubygems.org'
 gem 'rake'
 gem 'sinatra'
 gem 'haml'
-gem 'activerecord', "<= 2.3.11"
-gem 'i18n'
-gem 'sqlite3-ruby'
-gem 'sinatra-activerecord'
+gem 'activerecord', "3.0.9"
+gem 'sinatra-activerecord', :git => 'git@github.com:shell/sinatra-activerecord.git'
 gem "sinatra-reloader"
 
-group :production do
-  gem 'activerecord', "<= 2.3.11"
-end
+gem 'sqlite3-ruby'
+gem 'mysql2', '< 0.3'
+gem 'i18n', '0.5.0'
 
 group :development, :test do
   gem "simplecov", ">=0.4.2"
