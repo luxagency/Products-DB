@@ -5,6 +5,8 @@ class Product < ActiveRecord::Base
   belongs_to :category
   has_and_belongs_to_many :tags
 
+  default_scope order('created_at DESC')
+
   def local_url(site_id)
     "/goto/#{id}/site_id/#{site_id}"
   end
