@@ -10,6 +10,7 @@
       of 
       = (@products.count / PER_PAGE).round + 1
     %a(class="next browse right")
+    = haml :share_buttons
   .scrollable
     .items
       - @products.in_groups_of(PER_PAGE) do |group|

@@ -4,10 +4,14 @@
   %table
     %tr
       %th Name
+      %th Share URL
+      %th Twitter
       %th actions 
     - @categories.each do |category|
       %tr
         %td=category.name
+        %td=category.share_url
+        %td=category.twitter
         %td= link_to "Edit", "/categories/#{category.id}/edit"
 - else
   No categories found

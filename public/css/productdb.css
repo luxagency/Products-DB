@@ -1,4 +1,4 @@
-#ul-table li a { 
+#ul-table li a {
   background-color:#F4F7FA;
   font: 12px Arial, sans-serif;
   display:block;
@@ -26,15 +26,15 @@
   float:left;
 /*  border:1px solid #eee; */
 /*  border-right:none;*/
-  text-align: center; 
+  text-align: center;
   padding: 0px 4px 0px 0px;
-} 
+}
 * html #ul-table li a {
   width: 100%;
-} 
+}
 #ul-table li.top {
   border-bottom:none;
-} 
+}
 #ul-table li.right {
   border-right:1px solid #eee;
 }
@@ -55,6 +55,7 @@
 .nav {
 /*  text-align: center;*/
   margin: 5px 0px 5px 0px;
+  width: 860px;
 }
 
 .nav .nav-text {
@@ -64,4 +65,12 @@
 
 .bordered {
   border: 1px solid #BFBFBF
+}
+
+.left {
+  float: left;
+}
+
+.right {
+  float: right;
 }

@@ -29,6 +29,7 @@ ActiveRecord::Base.establish_connection dbconfig[RACK_ENV]
   get "/products" do
     params[:site_id] ||= SITE_ID
     category = params[:category_id] ? {:category_id => params[:category_id]} : {}
+    @category = Category.find(params[:category_id]) if params[:category_id]
     @products = Product.all(:limit => PER_PAGE*3, :conditions => category)
     haml :products_index
   end

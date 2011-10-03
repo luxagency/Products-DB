@@ -21,7 +21,7 @@
       %label(for="product-brand-url") Brand url
       %input(type="text" name="product[brand_url]" id="product-brand-url" value="#{@product.brand_url}")
     %li
-      %label(for="product-category_id") Link
+      %label(for="product-category_id") Category
       %select(id="product-category_id" name="product[category_id]")
         = options_for_select(Category.to_options, category)
     %li

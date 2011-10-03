@@ -7,4 +7,10 @@
     %li
       %label(for="category-name") Title
       %input(type="text" name="category[name]" id="category-name" value="#{@category.name}")
+    %li
+      %label(for="category-share_url") Share URL
+      %input(type="text" name="category[share_url]" id="category-share_url" value="#{@category.share_url}")
+    %li
+      %label(for="category-twitter") Twitter
+      %input(type="text" name="category[twitter]" id="category-twitter" value="#{@category.twitter}")
   %input(type="submit")

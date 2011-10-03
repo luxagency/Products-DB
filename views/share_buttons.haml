@@ -1,0 +1,26 @@
+- if @category
+  %div.right                                                
+    // Facebook
+    %span#fb-root
+    %span.fb-like(data-send="false" data-layout="button_count" data-href="#{@category.share_url}" data-width="100" data-show-faces="false")
+    :javascript
+      (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {return;}
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+        fjs.parentNode.insertBefore(js, fjs);
+      }(document, 'script', 'facebook-jssdk'));
+
+    // G+
+    %g:plusone(size="small" annotation="inline" width="170" href='#{@category.share_url}')
+    :javascript
+      (function() {
+        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+        po.src = 'https://apis.google.com/js/plusone.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+      })();
+
+    // Twitter
+    %a(href="https://twitter.com/share" class="twitter-share-button" data-count="horizontal" data-via="#{@category.twitter}") Tweet
+    %script(src="//platform.twitter.com/widgets.js")
