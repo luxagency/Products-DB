@@ -14,6 +14,10 @@ describe "Site Actions" do
     @app ||= Sinatra::Application
   end
 
+  let(:form_attributes) {
+    Site.new.attributes.keys - ['created_at', 'updated_at', 'clicks']
+  }
+
   context "acceptance" do
     before(:each) do
       authorize "admin", "rob"
@@ -21,7 +25,7 @@ describe "Site Actions" do
 
     it "should have form fields for each attribute" do
       get '/sites/new'
-      (Site.new.attributes.keys - ["clicks"]).each{|attr, _|
+      form_attributes.each{|attr, _|
         last_response.body.should =~ /site\[#{attr}\]/m
       }
     end

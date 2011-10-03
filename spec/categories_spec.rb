@@ -22,6 +22,10 @@ describe "Category Actions" do
     @app ||= Sinatra::Application
   end
 
+  let(:form_attributes) {
+    Category.new.attributes.keys - ['created_at', 'updated_at']
+  }
+
   context "acceptance" do
     before(:each) do
       authorize "admin", "rob"
@@ -29,7 +33,7 @@ describe "Category Actions" do
 
     it "should have form fields for each attribute" do
       get '/categories/new'
-      Category.new.attributes.keys.each{|attr, _|
+      form_attributes.each{|attr, _|
         last_response.body.should =~ /category\[#{attr}\]/m
       }
     end

@@ -21,6 +21,10 @@ describe "Product Actions" do
     @app ||= Sinatra::Application
   end
 
+  let(:form_attributes) {
+    Product.new.attributes.keys - ['created_at', 'updated_at']
+  }
+
   context "acceptance" do
     before(:each) do
       authorize "admin", "rob"
@@ -28,7 +32,7 @@ describe "Product Actions" do
 
     it "should have form fields for each attribute" do
       get '/products/new'
-      Product.new.attributes.keys.each{|attr, _|
+      form_attributes.each{|attr, _|
         last_response.body.should =~ /product\[#{attr}\]/m
       }
     end
