@@ -17,6 +17,7 @@ RACK_ENV ||= ENV["RACK_ENV"] || "development"
 SITE_ID = 1
 PER_PAGE = 6 # per page
 ActiveRecord::Base.establish_connection dbconfig[RACK_ENV]
+ActiveRecord::Base.logger = Logger.new(File.open("log/#{RACK_ENV}.log", "a"))
 
 
 ## actions ##
