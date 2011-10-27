@@ -39,3 +39,20 @@
 
 %br
 
+:javascript
+  var params = window.ladylux.getParams(window.location.href)
+  if(params["width"] != undefined) {
+    if(params["width"] == 1) {
+      $(".scrollable").width(700);
+      $(".nav").width(700);
+    } else if(params["width"] == "2") {
+      $(".scrollable").width(580);
+      $(".nav").width(580);
+    } else if(params["width"] == "3") {
+      $(".scrollable").width(418);
+      $(".nav").width(418);
+      $("#plusone").hide();
+    }
+  }
+
+
