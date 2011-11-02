@@ -22,5 +22,5 @@
       })();
 
     // Twitter
-    %a(href="https://twitter.com/share" class="twitter-share-button" data-count="horizontal" data-via="#{@category.share_url}") Tweet
+    %a{ "data-text" => @category.name, "data-url" => @category.share_url, "data-via" => @category.twitter, :href => "https://twitter.com/share", :class => "twitter-share-button", "data-count" => "horizontal" } Tweet
     %script(src="//platform.twitter.com/widgets.js")

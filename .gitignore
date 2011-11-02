@@ -1,3 +1,4 @@
 .bundle
 db/*.db
 coverage
+log/*.log

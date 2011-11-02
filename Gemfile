@@ -1,7 +1,7 @@
 source 'http://rubygems.org'
 
-gem 'rake'
-gem 'sinatra'
+gem 'rake', '0.8.7' # there are problems with rake 0.9.2y
+gem 'sinatra', '1.2.6'
 gem 'haml'
 gem 'activerecord', "3.0.9"
 gem 'sinatra-activerecord', :git => 'git@github.com:shell/sinatra-activerecord.git'
