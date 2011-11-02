@@ -43,7 +43,7 @@ end
     params[:site_id] ||= SITE_ID
     category = params[:category_id] ? {:category_id => params[:category_id]} : {}
     @category = Category.find(params[:category_id]) if params[:category_id]
-    @products = Product.all(:limit => @per_page*3, :conditions => category)
+    @products = Product.all(:conditions => category)
     haml :products_index
   end
 
