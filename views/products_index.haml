@@ -6,15 +6,15 @@
   %div.nav
     %a(class="prev browse left")
     %span.nav-text
-      %span#page_number 1 
-      of 
-      = (@products.count / PER_PAGE).round + 1
+      %span#page_number 1
+      of
+      = (@products.count / @per_page).round + 1
     %a(class="next browse right")
     = haml :share_buttons
   .scrollable
     .items
-      - @products.in_groups_of(PER_PAGE) do |group|
-        %div
+      - @products.in_groups_of(@per_page) do |group|
+        %div.group
           - group.compact.each do |product|
             .item
               %a(href="#{product.local_url(params[:site_id])}" target="blank" id="#{product.id}")
@@ -32,7 +32,7 @@
                   by
                   %a(href="#{product.brand_url}" target="blank" id="#{product.id}")
                     = product.brand_name
-  
+
   .clear
 - else
   No products found

@@ -8,11 +8,11 @@
     %link{:href => "/css/style.css", :media => "screen", :rel => "stylesheet", :type => "text/css"} 
     %link{:href => "/css/productdb.css", :media => "screen", :rel => "stylesheet", :type => "text/css"} 
     %link{:href => "/css/scrollable.css", :media => "screen", :rel => "stylesheet", :type => "text/css"} 
-    %script(src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js")
-    %script(src="http://cdn.jquerytools.org/1.2.5/jquery.tools.min.js")
-    %script(src="/products.js")
-    %script(src="/scrooge.min.js")
-    %script(src="/application.js")
+    %script{ :src => "http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js" }
+    %script{ :src => "http://cdn.jquerytools.org/1.2.5/jquery.tools.min.js" }
+    %script{ :src => "/js/products.js" }
+    %script{ :src => "/js/scrooge.min.js" }
+    %script{ :src => "/js/application.js" }
   %body
     - unless params[:widget]
       .container

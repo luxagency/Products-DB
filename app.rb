@@ -19,6 +19,19 @@ PER_PAGE = 6 # per page
 ActiveRecord::Base.establish_connection dbconfig[RACK_ENV]
 ActiveRecord::Base.logger = Logger.new(File.open("log/#{RACK_ENV}.log", "a"))
 
+before do
+  @per_page =
+    case params[:width].to_s
+      when '1'
+        5
+      when '2'
+        4
+      when '3'
+        3
+      else PER_PAGE
+    end
+end
+
 
 ## actions ##
   get "/" do
@@ -31,13 +44,13 @@ ActiveRecord::Base.logger = Logger.new(File.open("log/#{RACK_ENV}.log", "a"))
     params[:site_id] ||= SITE_ID
     category = params[:category_id] ? {:category_id => params[:category_id]} : {}
     @category = Category.find(params[:category_id]) if params[:category_id]
-    @products = Product.all(:limit => PER_PAGE*3, :conditions => category)
+    @products = Product.all(:limit => @per_page*3, :conditions => category)
     haml :products_index
   end
 
   get '/products/next/:index' do
     category = params[:category_id] ? {:category_id => params[:category_id]} : {}
-    @products = Product.all(:limit => PER_PAGE, :offset => params[:index].to_i * PER_PAGE, :conditions => category)
+    @products = Product.all(:limit => @per_page, :offset => params[:index].to_i * @per_page, :conditions => category)
     haml :products_next, :layout => false
   end
 
