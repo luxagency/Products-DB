@@ -8,7 +8,7 @@
     %span.nav-text
       %span#page_number 1
       of
-      = (@products.count.round(1) / @per_page).ceil
+      %span.total_pages=(@products.count.round(1) / @per_page).ceil
     %a(class="next browse right")
     = haml :share_buttons
   .scrollable{ "data-per-page" => @per_page }
@@ -35,7 +35,8 @@
 
   .clear
 - else
-  No products found
+  %div
+    No products found
 
   -#var params = window.ladylux.getParams(window.location.href)
   -#if(params["width"] != undefined) {
@@ -61,7 +62,6 @@
     var first_item = $('.item:first', scrollable);
     var inner_width = parseInt(first_item.outerWidth()) + parseInt(first_item.css('margin-left')) + parseInt(first_item.css('margin-right'));
     $('.group', scrollable).add(scrollable).add($('.nav')).width(inner_width*per_page);
-    console.log(inner_width, per_page);
   });
 
 

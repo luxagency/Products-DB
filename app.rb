@@ -15,7 +15,6 @@ require "./models.rb"
 dbconfig = YAML.load(File.read("config/database.yml"))
 RACK_ENV ||= ENV["RACK_ENV"] || "development"
 SITE_ID = 1
-PER_PAGE = 6 # per page
 ActiveRecord::Base.establish_connection dbconfig[RACK_ENV]
 ActiveRecord::Base.logger = Logger.new(File.open("log/#{RACK_ENV}.log", "a"))
 
@@ -28,7 +27,7 @@ before do
         4
       when '3'
         3
-      else PER_PAGE
+      else 6
     end
 end
 
