@@ -8,10 +8,10 @@
     %span.nav-text
       %span#page_number 1
       of
-      = (@products.count / @per_page).round + 1
+      = (@products.count.round(1) / @per_page).ceil
     %a(class="next browse right")
     = haml :share_buttons
-  .scrollable
+  .scrollable{ "data-per-page" => @per_page }
     .items
       - @products.in_groups_of(@per_page) do |group|
         %div.group
@@ -37,22 +37,31 @@
 - else
   No products found
 
+  -#var params = window.ladylux.getParams(window.location.href)
+  -#if(params["width"] != undefined) {
+  -#  if(params["width"] == 1) {
+  -#    $(".scrollable").width(700);
+  -#    $(".nav").width(700);
+  -#  } else if(params["width"] == "2") {
+  -#    $(".scrollable").width(580);
+  -#    $(".nav").width(580);
+  -#  } else if(params["width"] == "3") {
+  -#    $(".scrollable").width(418);
+  -#    $(".nav").width(418);
+  -#    $("#plusone").hide();
+  -#  }
+  -#}
+
 %br
 
 :javascript
-  var params = window.ladylux.getParams(window.location.href)
-  if(params["width"] != undefined) {
-    if(params["width"] == 1) {
-      $(".scrollable").width(700);
-      $(".nav").width(700);
-    } else if(params["width"] == "2") {
-      $(".scrollable").width(580);
-      $(".nav").width(580);
-    } else if(params["width"] == "3") {
-      $(".scrollable").width(418);
-      $(".nav").width(418);
-      $("#plusone").hide();
-    }
-  }
+  jQuery(function($){
+    var scrollable = $('.scrollable');
+    var per_page = scrollable.attr('data-per-page');
+    var first_item = $('.item:first', scrollable);
+    var inner_width = parseInt(first_item.outerWidth()) + parseInt(first_item.css('margin-left')) + parseInt(first_item.css('margin-right'));
+    $('.group', scrollable).add(scrollable).add($('.nav')).width(inner_width*per_page);
+    console.log(inner_width, per_page);
+  });
 
 

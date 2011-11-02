@@ -40,3 +40,7 @@ form ul li label {
 form input {
   width: 300px;
 }
+
+.fb_iframe_widget iframe {
+  vertical-align: baseline !important;
+}
