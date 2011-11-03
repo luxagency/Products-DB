@@ -8,11 +8,14 @@
     %link{:href => "/css/style.css", :media => "screen", :rel => "stylesheet", :type => "text/css"} 
     %link{:href => "/css/productdb.css", :media => "screen", :rel => "stylesheet", :type => "text/css"} 
     %link{:href => "/css/scrollable.css", :media => "screen", :rel => "stylesheet", :type => "text/css"} 
-    %script{ :src => "http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js" }
-    %script{ :src => "http://cdn.jquerytools.org/1.2.5/jquery.tools.min.js" }
-    %script{ :src => "/js/products.js" }
-    %script{ :src => "/js/scrooge.min.js" }
-    %script{ :src => "/js/application.js" }
+    %script{ :src => "http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js", :type => 'text/javascript' }
+    %script{ :src => "http://cdn.jquerytools.org/1.2.5/jquery.tools.min.js", :type => 'text/javascript' }
+    %script{ :src => "http://img.digitallylux.com/llcj.js", :type => 'text/javascript' }
+    %script{ :src => "/js/products.js", :type => 'text/javascript' }
+    %script{ :src => "/js/application.js", :type => 'text/javascript' }
+    %script{ :type => 'text/javascript' }
+      Scrooge.addCjSite('shopbop', 'shopbop.com', '5406065', '10456099');
+
   %body
     - unless params[:widget]
       .container

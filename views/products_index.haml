@@ -16,12 +16,13 @@
       - @products.in_groups_of(@per_page) do |group|
         %div.group
           - group.compact.each do |product|
+            - link = product.link #product.local_url(params[:site_id]
             .item
-              %a(href="#{product.local_url(params[:site_id])}" target="blank" id="#{product.id}")
-                %img(src="#{product.image_url}")
+              %a{ :href => link, :target => "blank", :id => product.id }
+                %img{ :src => product.image_url }
               %br
               %span
-                %a(href="#{product.local_url(params[:site_id])}" target="blank" id="#{product.id}")
+                %a{ :href => link, :target => "blank", :id => product.id }
                   - if product.brand_name && !product.brand_name.empty? && product.brand_url && !product.brand_url.empty?
                     = succeed '.' do
                       = product.title
