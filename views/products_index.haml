@@ -66,9 +66,10 @@
 
     var site_url = "#{@site.url}";
     var site_name = "#{@site.name}";
-    if (site_name && site_url) {
+    var cj_id = "#{@site.cj_id}";
+    if (site_name && site_url && cj_id) {
       site_url = site_url.replace('http://', '').replace('https://', '');
-      Scrooge.addCjSite('', site_url, '#{@site.cj_id}', '10456099').start();
+      Scrooge.addCjSite('', site_url, cj_id, '10456099').start();
     }
   });
 
