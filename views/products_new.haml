@@ -1,6 +1,6 @@
 %h1 New product
 - action = "/products" + (@product.new_record? ? "" : "/#{@product.id}")
-- category = @product.new_record? or @product.category.nil? ? '' : @product.category.id
+- category_id = @product.new_record? || @product.category.nil? ? '' : @product.category.id
 %form(action="#{action}" method="post")
   - if @errors
     #message= @product.errors.full_messages
@@ -23,7 +23,7 @@
     %li
       %label(for="product-category_id") Category
       %select(id="product-category_id" name="product[category_id]")
-        = options_for_select(Category.to_options, category)
+        = options_for_select(Category.to_options, category_id)
     %li
       %label(for="product-tag_id") Add tag
       %select(id="product-tag_id" name="product[tag_id]")

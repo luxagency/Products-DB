@@ -63,6 +63,13 @@
     var first_item = $('.item:first', scrollable);
     var inner_width = parseInt(first_item.outerWidth()) + parseInt(first_item.css('margin-left')) + parseInt(first_item.css('margin-right'));
     $('.group', scrollable).add(scrollable).add($('.nav')).width(inner_width*per_page);
+
+    var site_url = "#{@site.url}";
+    var site_name = "#{@site.name}";
+    if (site_name && site_url) {
+      site_url = site_url.replace('http://', '').replace('https://', '');
+      Scrooge.addCjSite('', site_url, '#{@site.cj_id}', '10456099').start();
+    }
   });
 
 

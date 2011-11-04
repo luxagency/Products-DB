@@ -3,19 +3,23 @@
 - unless @sites.empty?
   %table
     %tr
+      %th ID
       %th Name
       %th url
-      %th clicks
-      %th by category
-      %th by tags
+      -#%th clicks
+      -#%th by category
+      -#%th by tags
+      %th Cj ID
       %th actions
     - @sites.each do |site|
       %tr
+        %td=site.id
         %td=site.name
         %td=site.url
-        %td=site.clicks.to_i
-        %td=site.clicks_per_category
-        %td=site.clicks_per_tag
+        -#%td=site.clicks.to_i
+        -#%td=site.clicks_per_category
+        -#%td=site.clicks_per_tag
+        %td=site.cj_id
         %td= link_to "Edit", "/sites/#{site.id}/edit"
 - else
   No sites found

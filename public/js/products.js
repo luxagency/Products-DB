@@ -1,4 +1,4 @@
-$(function() {
+jQuery(function($) {
 
   var scrollable = $(".scrollable");
   var total_pages = parseInt($('.total_pages').text());

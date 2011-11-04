@@ -25,7 +25,7 @@ task :seed do
 end
 
 task :reset do
-  `echo '' > db/development.db`
+  `touch db/development.db`
   `rake db:migrate`
   `rake seed`
 end

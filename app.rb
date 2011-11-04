@@ -41,9 +41,12 @@ end
   ## products ##
   get "/products" do
     params[:site_id] ||= SITE_ID
-    category = params[:category_id] ? {:category_id => params[:category_id]} : {}
     @category = Category.find(params[:category_id]) if params[:category_id]
-    @products = Product.all(:conditions => category)
+
+    @products = Product.all( :conditions => (params[:category_id] ? {:category_id => params[:category_id]} : {}) )
+
+    @site = Site.find(params[:site_id])
+
     haml :products_index
   end
 
