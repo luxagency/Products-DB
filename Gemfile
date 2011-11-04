@@ -20,3 +20,5 @@ group :development, :test do
   gem 'autotest'
   gem 'autotest-growl'
 end
+
+gem 'shotgun'

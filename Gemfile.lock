@@ -57,6 +57,8 @@ GEM
       ruby-debug-base19 (>= 0.11.19)
     ruby_core_source (0.1.5)
       archive-tar-minitar (>= 0.5.2)
+    shotgun (0.9)
+      rack (>= 1.0)
     simplecov (0.4.2)
       simplecov-html (~> 0.4.4)
     simplecov-html (0.4.5)
@@ -94,6 +96,7 @@ DEPENDENCIES
   rspec
   rspec-core
   ruby-debug19
+  shotgun
   simplecov (>= 0.4.2)
   sinatra (= 1.2.6)
   sinatra-activerecord!
