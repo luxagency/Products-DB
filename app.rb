@@ -10,7 +10,7 @@ require "bundler/setup"
 # App
 require "./helpers.rb"
 
-Dir.entries('/home/anton/!rb.projects/products-db/source/models/').each do |model|
+Dir.entries('./models/').each do |model|
   require './models/'+model if model != '.' && model != '..'
 end
 
