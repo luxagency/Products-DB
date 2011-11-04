@@ -15,7 +15,7 @@
         %td=product.title
         %td=product.link
         %td=product.image_url
-        %td=link_to product.brand_name, product.brand_url
+        %td=link_to product.brand.name, product.brand.url if product.brand && product.brand.name && product.brand.url
         %td=product.category
         %td=product.tags.collect(&:name).join(', ')
         %td

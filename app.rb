@@ -9,7 +9,10 @@ require "bundler/setup"
 
 # App
 require "./helpers.rb"
-require "./models.rb"
+
+Dir.entries('/home/anton/!rb.projects/products-db/source/models/').each do |model|
+  require './models/'+model if model != '.' && model != '..'
+end
 
 dbconfig = YAML.load(File.read("config/database.yml"))
 RACK_ENV = ENV["RACK_ENV"] || "development"
@@ -46,32 +49,32 @@ end
 
     @site = Site.find(params[:site_id])
 
-    haml :products_index
+    haml :"products/index"
   end
 
   get '/products/next/:index' do
     category = params[:category_id] ? {:category_id => params[:category_id]} : {}
     @products = Product.all(:limit => @per_page, :offset => params[:index].to_i * @per_page, :conditions => category)
-    haml :products_next, :layout => false
+    haml :"products/next", :layout => false
   end
 
   get "/products/new" do
     protected!
     @product = Product.new
-    haml :products_new
+    haml :"products/new"
   end
 
   get "/products/admin" do
     protected!
     @products = Product.all
-    haml :products_admin
+    haml :"products/admin"
   end
 
   get "/products/:id/edit" do
     protected!
     @product = Product.find(params[:id])
 
-    haml :products_new
+    haml :"products/new"
   end
 
   post "/products/:id" do
@@ -82,7 +85,7 @@ end
       redirect '/products/admin'
     else
       @errors = true
-      haml :products_new
+      haml :"products/new"
     end
   end
 
@@ -94,7 +97,7 @@ end
       redirect "/products"
     else
       @errors = true
-      haml :products_new
+      haml :"products/new"
     end
   end
 
@@ -102,13 +105,13 @@ end
   get "/sites" do
     protected!
     @sites = Site.all
-    haml :sites_index
+    haml :"sites/index"
   end
 
   get "/sites/new" do
     protected!
     @site = Site.new
-    haml :sites_new
+    haml :"sites/new"
   end
 
   post "/sites" do
@@ -118,7 +121,7 @@ end
       redirect "/sites"
     else
       @errors = true
-      haml :sites_new
+      haml :"sites/new"
     end
   end
 
@@ -126,7 +129,7 @@ end
     protected!
     @site = Site.find(params[:id])
 
-    haml :sites_new
+    haml :"sites/new"
   end
 
   post "/sites/:id" do
@@ -137,7 +140,7 @@ end
       redirect '/sites'
     else
       @errors = true
-      haml :sites_new
+      haml :"sites/new"
     end
   end
 
@@ -146,13 +149,13 @@ end
   get "/categories" do
     protected!
     @categories = Category.all
-    haml :categories_index
+    haml :"categories/index"
   end
 
   get "/categories/new" do
     protected!
     @category = Category.new
-    haml :categories_new
+    haml :"categories/new"
   end
 
   post "/categories" do
@@ -162,7 +165,7 @@ end
       redirect "/categories"
     else
       @errors = true
-      haml :categories_new
+      haml :"categories/new"
     end
   end
 
@@ -170,7 +173,7 @@ end
     protected!
     @category = Category.find(params[:id])
 
-    haml :categories_new
+    haml :"categories/new"
   end
 
   post "/categories/:id" do
@@ -180,7 +183,7 @@ end
       redirect '/categories'
     else
       @errors = true
-      haml :categories_new
+      haml :"categories/new"
     end
   end
   
@@ -189,13 +192,13 @@ end
   get "/tags" do
     protected!
     @tags = Tag.all
-    haml :tags_index
+    haml :"tags/index"
   end
 
   get "/tags/new" do
     protected!
     @tag = Tag.new
-    haml :tags_new
+    haml :"tags/new"
   end
 
   post "/tags" do
@@ -205,7 +208,7 @@ end
       redirect "/tags"
     else
       @errors = true
-      haml :tags_new
+      haml :"tags/new"
     end
   end
 
@@ -213,7 +216,7 @@ end
     protected!
     @tag = Tag.find(params[:id])
 
-    haml :tags_new
+    haml :"tags/new"
   end
 
   post "/tags/:id" do
@@ -223,7 +226,7 @@ end
       redirect '/tags'
     else
       @errors = true
-      haml :tags_new
+      haml :"tags/new"
     end
   end
 
@@ -233,13 +236,13 @@ end
   get "/referrals" do
     protected!
     @referrals = Referral.all
-    haml :referrals_index
+    haml :"referrals/index"
   end
 
   get "/referrals/new" do
     protected!
     @referral = Referral.new
-    haml :referrals_new
+    haml :"referrals/new"
   end
 
   post "/referrals" do
@@ -249,7 +252,7 @@ end
       redirect "/referrals"
     else
       @errors = true
-      haml :referrals_new
+      haml :"referrals/new"
     end
   end
 
@@ -257,7 +260,7 @@ end
     protected!
     @referral = Referral.find(params[:id])
 
-    haml :referrals_new
+    haml :"referrals/new"
   end
 
   post "/referrals/:id" do
@@ -267,9 +270,52 @@ end
       redirect '/referrals'
     else
       @errors = true
-      haml :referrals_new
+      haml :"referrals/new"
     end
   end
+
+
+## brands
+get "/brands" do
+  protected!
+  @brands = Brand.all
+  haml :"brands/index"
+end
+
+get "/brands/new" do
+  protected!
+  @brand = Brand.new
+  haml :"brands/new"
+end
+
+post "/brands" do
+  protected!
+  @brand = Brand.new(params[:brand])
+  if @brand.save
+    redirect "/brands"
+  else
+    @errors = true
+    haml :"brands/new"
+  end
+end
+
+get "/brands/:id/edit" do
+  protected!
+  @brand = Brand.find(params[:id])
+
+  haml :"brands/new"
+end
+
+post "/brands/:id" do
+  protected!
+  @brand = Brand.find(params[:id])
+  if @brand.update_attributes(params[:brand])
+    redirect '/brands'
+  else
+    @errors = true
+    haml :"brands/new"
+  end
+end
   
 
   ## redirect ##

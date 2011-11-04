@@ -23,36 +23,21 @@
               %br
               %span
                 %a{ :href => link, :target => "blank", :id => product.id }
-                  - if product.brand_name && !product.brand_name.empty? && product.brand_url && !product.brand_url.empty?
+                  - if product.brand && product.brand.name && !product.brand.name.empty? && product.brand.url && !product.brand.url.empty?
                     = succeed '.' do
                       = product.title
                   - else
                     = product.title
-                - if product.brand_name && !product.brand_name.empty? && product.brand_url && !product.brand_url.empty?
+                - if product.brand && product.brand.name && !product.brand.name.empty? && product.brand.url && !product.brand.url.empty?
                   %br
                   by
-                  %a(href="#{product.brand_url}" target="blank" id="#{product.id}")
-                    = product.brand_name
+                  %a{ href: "#{product.brand.url}", target: "blank", id: "#{product.id}" }
+                    = product.brand.name
 
   .clear
 - else
   %div
     No products found
-
-  -#var params = window.ladylux.getParams(window.location.href)
-  -#if(params["width"] != undefined) {
-  -#  if(params["width"] == 1) {
-  -#    $(".scrollable").width(700);
-  -#    $(".nav").width(700);
-  -#  } else if(params["width"] == "2") {
-  -#    $(".scrollable").width(580);
-  -#    $(".nav").width(580);
-  -#  } else if(params["width"] == "3") {
-  -#    $(".scrollable").width(418);
-  -#    $(".nav").width(418);
-  -#    $("#plusone").hide();
-  -#  }
-  -#}
 
 %br
 

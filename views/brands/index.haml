@@ -1,0 +1,18 @@
+%h1 Listing brands
+
+- unless @brands.empty?
+  %table
+    %tr
+      %th Name
+      %th Url
+      %th actions 
+    - @brands.each do |brand|
+      %tr
+        %td=brand.name
+        %td=brand.url
+        %td= link_to "Edit", "/brands/#{brand.id}/edit"
+- else
+  No brands found
+
+%br
+%p= link_to "New Brand", "/brands/new"

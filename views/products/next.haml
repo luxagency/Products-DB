@@ -3,8 +3,8 @@
     - @products.each do |product|
       %div.item
         
-        %a(href="#{product.local_url(params[:site_id])}" target="blank" id="#{product.id}")
-          %img(src="#{product.image_url}")
+        %a{ href: "#{product.local_url(params[:site_id])}", target: "blank", id: "#{product.id}" }
+          %img{ src: "#{product.image.url}" }
           %br
           %span= product.title
           

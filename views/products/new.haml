@@ -15,11 +15,9 @@
       %label(for="product-image-url") Image url
       %input(type="text" name="product[image_url]" id="product-image-url" value="#{@product.image_url}")
     %li
-      %label(for="product-brand-name") Brand Name
-      %input(type="text" name="product[brand_name]" id="product-brand-name" value="#{@product.brand_name}")
-    %li
-      %label(for="product-brand-url") Brand url
-      %input(type="text" name="product[brand_url]" id="product-brand-url" value="#{@product.brand_url}")
+      %label{ for: "product-brand-name" } Brand
+      %select{ id: "product-brand-id", name: "product[brand_id]" }
+        = options_for_select(Brand.to_options, (@product.brand.name if @product.brand))
     %li
       %label(for="product-category_id") Category
       %select(id="product-category_id" name="product[category_id]")
