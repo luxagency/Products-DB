@@ -1,16 +1,16 @@
 %h1 New site
 - action = "/sites" + (@site.new_record? ? "" : "/#{@site.id}")
-%form { :action => action, :method => "post" }
-  - if @errors
-    #message= @site.errors.full_messages
+%form{ action: action, method: "post" }
+  -if @errors
+    #message=@site.errors.full_messages
   %ul
     %li
-      %label(for="site-name") Title
-      %input(type="text" name="site[name]" id="site-name" value="#{@site.name}")
+      %label{ for: "site-name" } Title
+      %input{ type: "text", name: "site[name]", id: "site-name", value: "#{@site.name}" }
     %li
-      %label(for="site-url") Link
-      %input(type="text" name="site[url]" id="site-url" value="#{@site.url}")
+      %label{ for: "site-url"} Link
+      %input{ type: "text", name: "site[url]", id: "site-url", value: "#{@site.url}" }
     %li
-      %label(for="cj-id") Cj ID
-      %input(type="text" name="site[cj_id]" id="cj_id" value="#{@site.cj_id}")
-  %input(type="submit")
+      %label{ for: "cj-id" } Cj ID
+      %input{ type: "text", name: "site[cj_id]", id: "cj_id", value: "#{@site.cj_id}" }
+  %input{ type: "submit" }
